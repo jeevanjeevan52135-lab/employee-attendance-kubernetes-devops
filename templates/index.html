@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TeamTrack | Employee Attendance</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar"><div class="brand">TeamTrack <span>DEVOPS LAB</span></div><div class="environment">{{ app_env }}</div></header>
+<main>
+<section class="hero">
+<p class="eyebrow">EMPLOYEE MANAGEMENT</p><h1>Attendance, made simple.</h1>
+<p>A sample employee attendance application deployed through Docker, Jenkins and Kubernetes.</p>
+<form class="checkin" action="{{ url_for('check_in') }}" method="post">
+<input name="name" placeholder="Enter employee name" required><button type="submit">Check in</button></form>
+{% with messages = get_flashed_messages() %}{% if messages %}<p class="flash">{{ messages[0] }}</p>{% endif %}{% endwith %}
+</section>
+<section class="stats">
+<article><span>Total employees</span><strong>{{ employees|length }}</strong></article>
+<article><span>Present today</span><strong>{{ employees|selectattr('status','equalto','Present')|list|length }}</strong></article>
+<article><span>Application status</span><strong class="online">● Online</strong></article>
+</section>
+<section class="panel"><div class="panel-heading"><div><p class="eyebrow">TEAM OVERVIEW</p><h2>Employee attendance</h2></div><span class="pill">LIVE DEMO</span></div>
+<div class="table-wrap"><table><thead><tr><th>EMPLOYEE</th><th>DEPARTMENT</th><th>STATUS</th></tr></thead><tbody>
+{% for employee in employees %}<tr><td><span class="avatar">{{ employee.name[0]|upper }}</span>{{ employee.name }}</td><td>{{ employee.department }}</td><td><span class="status {{ 'present' if employee.status == 'Present' else 'leave' }}">{{ employee.status }}</span></td></tr>{% endfor %}
+</tbody></table></div></section>
+<footer>Served by Pod/container: <code>{{ pod_name }}</code> · Health check: <code>/health</code></footer>
+</main></body></html>
