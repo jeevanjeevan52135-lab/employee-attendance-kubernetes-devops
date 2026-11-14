@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         // Replace with your Docker Hub username.
-        IMAGE_NAME = 'YOUR_DOCKERHUB_USERNAME/employee-attendance'
+        IMAGE_NAME = 'jeeva1304/employee-attendance'
         K8S_NAMESPACE = 'attendance'
     }
     stages {
